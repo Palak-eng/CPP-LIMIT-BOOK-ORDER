@@ -13,6 +13,7 @@ class OrderBook {
 
     public:
          void addOrder(const Order& order);
+         void printBook() const;
 };
 
 #endif
