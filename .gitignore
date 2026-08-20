@@ -1,0 +1,38 @@
+# Build artifacts
+build/
+bin/
+*.exe
+*.o
+*.obj
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+*.pdb
+*.ilk
+*.lib
+
+# Compilers / toolchain
+.vs/
+*.user
+
+# IDE / editor
+.vscode/
+*.vscode*
+.idea/
+*.swp
+*.swo
+
+# Testing / coverage
+*.gcda
+*.gcno
+*.gcov
+coverage/
+
+# Misc
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
