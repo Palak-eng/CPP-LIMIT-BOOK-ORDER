@@ -22,34 +22,40 @@ This project is intended as a systems programming and backend engineering portfo
 ### Completed
 
 * Project structure
-* `Order` class
+* `Order` class (with `reduceQuantity()` for applying fills)
 * Strongly typed `Side` enum (`Buy` / `Sell`)
 * Type-safe order identifiers using `uint64_t`
 * Constructor-based validation
 * Exception handling for invalid orders
 * Getter methods with `const` correctness
 * Encapsulation using private data members
+* `OrderBook` with separate buy and sell books
+* Limit order insertion
+* Book visualization (`printBook()`)
+* Basic matching engine (incoming buy orders vs resting sell orders)
+* Partial fills via quantity reduction
+* Fully-filled price levels are erased from the book
 
 ### In progress
 
-* `OrderBook` implementation
-* Buy and sell book data structures
-* Order insertion logic
-* Book visualization (`printBook()`)
+* Sell-side matching (incoming sell orders vs resting buy orders)
+* Trade reporting (fills are currently applied silently)
+* Order cancellation and modification
 
 ## Project structure
 
 ```
-cpp-limit-order-book/
+limit-order-book/
 │
 ├── include/
 │   ├── Order.h
 │   └── OrderBook.h
 │
 ├── src/
-│   ├── main.cpp
 │   └── OrderBook.cpp
 │
+├── main.cpp
+├── .gitignore
 └── README.md
 ```
 
@@ -75,7 +81,17 @@ The project emphasizes:
 * STL-based data structures
 * Clean separation between interface and implementation
 
-## Planned data structures
+## Matching engine
+
+An incoming limit order is matched against the opposite side of the book before resting:
+
+1. The best available price level is checked (`sellBook.begin()` for buy orders).
+2. If the incoming order crosses (buy price >= best ask), it trades against the oldest order at that level.
+3. The fill quantity is `min(incoming quantity, resting quantity)`; both quantities are reduced accordingly.
+4. Orders fully filled are removed; empty price levels are erased from the map.
+5. Any remaining quantity rests on the book at its limit price.
+
+## Data structures
 
 Buy side:
 
@@ -98,18 +114,18 @@ Compile the project with a C++17 compiler.
 Example:
 
 ```bash
-g++ src/main.cpp -o order_test
+g++ -std=c++17 main.cpp src/OrderBook.cpp -o order_test
 ./order_test
 ```
 
 ## Roadmap
 
 * [x] Order class
-* [ ] OrderBook
-* [ ] Limit order insertion
-* [ ] Price-time priority
-* [ ] Matching engine
-* [ ] Partial fills
+* [x] OrderBook
+* [x] Limit order insertion
+* [x] Price-time priority
+* [ ] Matching engine (buy side working, sell side pending)
+* [x] Partial fills
 * [ ] Order cancellation
 * [ ] Order modification
 * [ ] GoogleTest integration

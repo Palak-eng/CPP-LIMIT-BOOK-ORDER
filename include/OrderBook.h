@@ -13,8 +13,10 @@ class OrderBook {
         std::map<int, std::deque<Order>> sellBook;
 
     public:
-         void addOrder(const Order& order);
+         void addOrder( Order order);
          void printBook() const;
+
+         void matchOrder(Order& order);
 };
 
 #endif

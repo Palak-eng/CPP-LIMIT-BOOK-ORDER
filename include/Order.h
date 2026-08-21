@@ -58,6 +58,9 @@ public:
     uint64_t getTimestamp() const {
         return timestamp;
     }
+    void reduceQuantity(int amount){
+        quantity-=amount;
+    }
 };
 
 #endif

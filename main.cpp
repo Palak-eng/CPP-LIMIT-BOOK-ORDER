@@ -1,30 +1,30 @@
 #include <iostream>
-#include "../include/Order.h"
-#include "../include/OrderBook.h"
+#include "include/Order.h"
+#include "include/OrderBook.h"
 
-int main() {
-    try {
-        Order order(1, Side::Buy, 10025, 50, 123456);
+int main()
+{
+    try
+    {
+        OrderBook book;
 
-        std::cout << "Order created successfully\n";
-        std::cout << "Price: " << order.getPrice() << "\n";
-        std::cout << "Quantity: " << order.getQuantity() << "\n";
+        // Existing SELL order
+        Order sellOrder(1, Side::Sell, 103, 20, 1);
+
+        // Incoming BUY order
+        Order buyOrder(2, Side::Buy, 105, 50, 2);
+
+        // Add orders to the book
+        book.addOrder(sellOrder);
+        book.addOrder(buyOrder);
+
+        // Display final order book
+        book.printBook();
     }
-    catch (const std::exception& e) {
-        std::cout << "Error: " << e.what() << "\n";
+    catch (const std::invalid_argument& e)
+    {
+        std::cout << "Invalid order: " << e.what() << "\n";
     }
-    OrderBook book;
-
-book.addOrder(Order(1, Side::Buy, 100, 50, 1));
-book.addOrder(Order(2, Side::Buy, 105, 20, 2));
-book.addOrder(Order(3, Side::Buy, 105, 30, 3));
-book.addOrder(Order(4, Side::Buy, 95, 10, 4));
-
-book.addOrder(Order(5, Side::Sell, 110, 40, 5));
-book.addOrder(Order(6, Side::Sell, 105, 25, 6));
-book.addOrder(Order(7, Side::Sell, 110, 15, 7));
-
-book.printBook();
 
     return 0;
 }
