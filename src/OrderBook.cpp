@@ -81,6 +81,35 @@ void OrderBook::matchOrder(Order& order)
             }
         }
     }
+    else if(order.getSide() == Side::Sell){
+        while (!buyBook.empty()) {
+            auto bestBuy = buyBook.begin();
+
+            if (order.getPrice() > bestBuy->first) {
+                break;
+            }
+
+            Order& restingOrder = bestBuy->second.front();
+
+            int tradeQuantity =
+                std::min(order.getQuantity(), restingOrder.getQuantity());
+
+            order.reduceQuantity(tradeQuantity);
+            restingOrder.reduceQuantity(tradeQuantity);
+
+            if (restingOrder.getQuantity() == 0) {
+                bestBuy->second.pop_front();
+                if (bestBuy->second.empty()) {
+                    buyBook.erase(bestBuy);
+                }
+            }
+
+            if (order.getQuantity() == 0) {
+                break;
+            }
+        }
+    }
+    
 }
     
 

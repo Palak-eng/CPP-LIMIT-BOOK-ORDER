@@ -8,15 +8,13 @@ int main()
     {
         OrderBook book;
 
-        // Existing SELL order
-        Order sellOrder(1, Side::Sell, 103, 20, 1);
+        Order buy1(1, Side::Buy, 100, 5, 1);
+        Order buy2(2, Side::Buy, 100, 5, 2);
+        Order sell1(3, Side::Sell, 100, 6, 3);
 
-        // Incoming BUY order
-        Order buyOrder(2, Side::Buy, 105, 50, 2);
-
-        // Add orders to the book
-        book.addOrder(sellOrder);
-        book.addOrder(buyOrder);
+        book.addOrder(buy1);
+        book.addOrder(buy2);
+        book.addOrder(sell1);
 
         // Display final order book
         book.printBook();

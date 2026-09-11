@@ -10,6 +10,7 @@ enum class Side
     Sell
 };
 
+
 class Order
 {
     OrderId id;
@@ -59,7 +60,10 @@ public:
         return timestamp;
     }
     void reduceQuantity(int amount){
-        quantity-=amount;
+        if (amount < 0 || amount > quantity) {
+            throw std::invalid_argument("Invalid fill quantity");
+        }
+        quantity -= amount;
     }
 };
 
