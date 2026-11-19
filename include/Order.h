@@ -1,19 +1,23 @@
+
 #ifndef ORDER_H
 #define ORDER_H
 
 #include <cstdint>
 #include <stdexcept>
+
 using OrderId = uint64_t;
+
 enum class Side
 {
     Buy,
     Sell
 };
-enum class OrderType{
-   Limit,
-   Market
-};
 
+enum class OrderType
+{
+    Limit,
+    Market
+};
 
 class Order
 {
@@ -25,58 +29,88 @@ class Order
     OrderType type;
 
 public:
-     Order(OrderId id,
-     Side side,
-     OrderType type,
-     int price,
-     int quantity,
-      uint64_t timestamp)
-      : id(id),
-        side(side),
-        type(type),
-         price(price),
+    Order(OrderId id,
+          Side side,
+          OrderType type,
+          int price,
+          int quantity,
+          uint64_t timestamp)
+        : id(id),
+          side(side),
+          price(price),
           quantity(quantity),
-          timestamp(timestamp)
-
-     {
-        if (price <= 0) {
-            throw std::invalid_argument("Price must be positive");
+          timestamp(timestamp),
+          type(type)
+    {
+        if (type == OrderType::Limit && price <= 0)
+        {
+            throw std::invalid_argument(
+                "Limit order price must be positive");
         }
 
-        if (quantity <= 0) {
-            throw std::invalid_argument("Quantity must be positive");
+        if (type == OrderType::Market && price != 0)
+        {
+            throw std::invalid_argument(
+                "Market order price must be zero");
+        }
+
+        if (quantity <= 0)
+        {
+            throw std::invalid_argument(
+                "Quantity must be positive");
         }
     }
-    OrderId getId() const {
+
+    OrderId getId() const
+    {
         return id;
     }
 
-    Side getSide() const {
+    Side getSide() const
+    {
         return side;
     }
 
-    int getPrice() const {
+    OrderType getType() const
+    {
+        return type;
+    }
+
+    int getPrice() const
+    {
         return price;
     }
 
-    int getQuantity() const {
+    int getQuantity() const
+    {
         return quantity;
     }
 
-    uint64_t getTimestamp() const {
+    uint64_t getTimestamp() const
+    {
         return timestamp;
     }
-    void reduceQuantity(int amount){
-        if (amount < 0 || amount > quantity) {
+
+    void reduceQuantity(int amount)
+    {
+        if (amount < 0 || amount > quantity)
+        {
             throw std::invalid_argument("Invalid fill quantity");
         }
+
         quantity -= amount;
+    }
+
+    void setQuantity(int newQuantity)
+    {
+        if (newQuantity <= 0)
+        {
+            throw std::invalid_argument(
+                "Quantity must be positive");
+        }
+
+        quantity = newQuantity;
     }
 };
 
 #endif
-
-
-
-
-
