@@ -8,13 +8,12 @@ int main()
     {
         OrderBook book;
 
-        Order buy1(1, Side::Buy, 100, 5, 1);
-        Order buy2(2, Side::Buy, 100, 5, 2);
-        Order sell1(3, Side::Sell, 100, 6, 3);
+       Order buyOrder(1, Side::Buy, OrderType::Limit, 100, 10, 1);
+      Order sellOrder(2, Side::Sell, OrderType::Limit, 100, 6, 2);
 
-        book.addOrder(buy1);
-        book.addOrder(buy2);
-        book.addOrder(sell1);
+        book.addOrder(buyOrder);
+        book.addOrder(sellOrder);
+        
 
         // Display final order book
         book.printBook();

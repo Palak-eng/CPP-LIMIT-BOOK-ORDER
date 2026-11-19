@@ -9,6 +9,10 @@ enum class Side
     Buy,
     Sell
 };
+enum class OrderType{
+   Limit,
+   Market
+};
 
 
 class Order
@@ -18,15 +22,18 @@ class Order
     int price;
     int quantity;
     uint64_t timestamp;
+    OrderType type;
 
 public:
      Order(OrderId id,
      Side side,
+     OrderType type,
      int price,
      int quantity,
       uint64_t timestamp)
       : id(id),
         side(side),
+        type(type),
          price(price),
           quantity(quantity),
           timestamp(timestamp)
